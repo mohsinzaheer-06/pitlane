@@ -1,0 +1,531 @@
+import React, {useEffect, useState} from 'react';
+import {LogOut, Package, Shield} from 'lucide-react';
+import {useApp} from '../context/AppContext';
+import type {OrderRecord} from '../types';
+
+export function AccountPage() {
+  const {user, setUser, refreshUser, logout, navigate, showToast, formatPrice} = useApp();
+  const [authTab, setAuthTab] = useState<'login' | 'register' | 'reset'>('login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [whatsappOptIn, setWhatsappOptIn] = useState(true);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [authBusy, setAuthBusy] = useState(false);
+
+  const [accountTab, setAccountTab] = useState<'orders' | 'addresses' | 'wishlist' | 'settings'>('orders');
+  const [orders, setOrders] = useState<OrderRecord[]>([]);
+  const [addresses, setAddresses] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<any[]>([]);
+
+  // Address form
+  const [addrLabel, setAddrLabel] = useState('Home');
+  const [addrCountry, setAddrCountry] = useState('Pakistan');
+  const [addrCity, setAddrCity] = useState('');
+  const [addrPostal, setAddrPostal] = useState('');
+  const [addrStreet, setAddrStreet] = useState('');
+
+  // Profile form
+  const [profName, setProfName] = useState('');
+  const [profPhone, setProfPhone] = useState('');
+  const [profWa, setProfWa] = useState(true);
+  const [profMkt, setProfMkt] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    setProfName(user.name);
+    setProfPhone(user.phone);
+    setProfWa(Boolean(user.whatsapp_opt_in));
+    setProfMkt(Boolean(user.marketing_opt_in));
+
+    fetch('/api/account/orders')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d && setOrders(d.orders || []));
+    fetch('/api/account/addresses')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d && setAddresses(d.addresses || []));
+    fetch('/api/account/wishlist')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d && setWishlist(d.wishlist || []));
+  }, [user]);
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError(null);
+    setAuthBusy(true);
+    try {
+      if (authTab === 'reset') {
+        const res = await fetch('/api/auth/password-reset-request', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({email}),
+        });
+        const d = await res.json();
+        showToast(d.message || 'Reset link queued.');
+        setAuthTab('login');
+        return;
+      }
+
+      const url = authTab === 'login' ? '/api/auth/login' : '/api/auth/register';
+      const body =
+        authTab === 'login'
+          ? {email, password}
+          : {name, email, phone, password, whatsappOptIn, marketingOptIn};
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body),
+      });
+      const d = await res.json();
+      if (!res.ok) {
+        setAuthError(d.error || 'Authentication failed.');
+        return;
+      }
+      setUser(d.user);
+      await refreshUser();
+      showToast(`Welcome, ${d.user.name}`);
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
+  if (!user) {
+    return (
+      <div className="max-w-lg mx-auto px-4 py-14">
+        <div className="bg-[#181A1D] border border-[#27272A] p-6 md:p-8 space-y-6">
+          <div>
+            <p className="font-mono-tabular text-xs uppercase text-[#EF2929]">PITLANE Member Access</p>
+            <h1 className="font-display text-3xl text-white uppercase mt-1">
+              {authTab === 'login'
+                ? 'Sign In'
+                : authTab === 'register'
+                  ? 'Create Account'
+                  : 'Reset Password'}
+            </h1>
+          </div>
+
+          <div className="flex border-b border-[#27272A] text-xs font-mono-tabular uppercase">
+            <button
+              type="button"
+              onClick={() => setAuthTab('login')}
+              className={`px-4 py-2.5 border-b-2 ${
+                authTab === 'login' ? 'border-[#EF2929] text-white' : 'border-transparent text-[#71717A]'
+              }`}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthTab('register')}
+              className={`px-4 py-2.5 border-b-2 ${
+                authTab === 'register' ? 'border-[#EF2929] text-white' : 'border-transparent text-[#71717A]'
+              }`}
+            >
+              Register
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthTab('reset')}
+              className={`px-4 py-2.5 border-b-2 ${
+                authTab === 'reset' ? 'border-[#EF2929] text-white' : 'border-transparent text-[#71717A]'
+              }`}
+            >
+              Reset
+            </button>
+          </div>
+
+          {authError && (
+            <div role="alert" className="bg-[#93000a] border border-[#EF2929] p-3 text-xs text-white">
+              {authError}
+            </div>
+          )}
+
+          <form onSubmit={handleAuth} className="space-y-4">
+            {authTab === 'register' && (
+              <>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Full Name"
+                  className="w-full h-11 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+                />
+                <input
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Phone / WhatsApp (+92... or intl)"
+                  className="w-full h-11 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+                />
+              </>
+            )}
+
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email Address"
+              className="w-full h-11 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+            />
+
+            {authTab !== 'reset' && (
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="w-full h-11 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+              />
+            )}
+
+            {authTab === 'register' && (
+              <div className="space-y-2 text-xs text-[#C6C6C7]">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={whatsappOptIn}
+                    onChange={(e) => setWhatsappOptIn(e.target.checked)}
+                    className="w-4 h-4 accent-[#EF2929]"
+                  />
+                  <span>Receive order updates via WhatsApp</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={marketingOptIn}
+                    onChange={(e) => setMarketingOptIn(e.target.checked)}
+                    className="w-4 h-4 accent-[#EF2929]"
+                  />
+                  <span>Receive limited drop release alerts</span>
+                </label>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={authBusy}
+              className="w-full h-12 bg-[#EF2929] hover:bg-white text-white hover:text-[#111315] font-mono-tabular text-xs font-semibold uppercase tracking-wider transition-colors"
+            >
+              {authBusy
+                ? 'Authenticating...'
+                : authTab === 'login'
+                  ? 'Sign In'
+                  : authTab === 'register'
+                    ? 'Create Account'
+                    : 'Request Reset'}
+            </button>
+          </form>
+
+          {/* Seeded Demo Credentials Helper */}
+          <div className="pt-4 border-t border-[#27272A] text-xs font-mono-tabular text-[#71717A] space-y-1.5">
+            <p className="text-white uppercase">Demo Test Credentials:</p>
+            <p>Customer: driver@pitlane.pk / PitlaneDriver!2026</p>
+            <p>Admin: admin@pitlane.pk / PitlaneAdmin!2026</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const handleAddAddress = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await fetch('/api/account/addresses', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        label: addrLabel,
+        recipientName: user.name,
+        phone: user.phone || '+923001234567',
+        country: addrCountry,
+        city: addrCity,
+        postalCode: addrPostal,
+        streetAddress: addrStreet,
+        isDefault: addresses.length === 0,
+      }),
+    });
+    if (res.ok) {
+      const d = await res.json();
+      setAddresses((prev) => [d.address, ...prev]);
+      setAddrCity('');
+      setAddrStreet('');
+      showToast('Address saved');
+    }
+  };
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await fetch('/api/auth/profile', {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name: profName,
+        phone: profPhone,
+        preferredCurrency: user.preferred_currency || 'PKR',
+        marketingOptIn: profMkt,
+        whatsappOptIn: profWa,
+      }),
+    });
+    if (res.ok) {
+      const d = await res.json();
+      setUser(d.user);
+      showToast('Preferences updated');
+    }
+  };
+
+  return (
+    <div className="max-w-[1440px] mx-auto px-4 md:px-10 py-10">
+      <div className="pb-6 border-b border-[#27272A] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <p className="font-mono-tabular text-xs uppercase text-[#EF2929]">
+            {user.role} Account · {user.email}
+          </p>
+          <h1 className="font-display text-4xl text-white uppercase mt-1">{user.name}</h1>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          {user.role === 'ADMIN' && (
+            <button
+              type="button"
+              onClick={() => navigate('/admin')}
+              className="h-11 px-5 bg-[#EF2929] text-white font-mono-tabular text-xs font-semibold uppercase flex items-center gap-2"
+            >
+              <Shield className="w-4 h-4" />
+              <span>Admin Dashboard</span>
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={logout}
+            className="h-11 px-5 border border-[#27272A] hover:border-white text-white font-mono-tabular text-xs uppercase flex items-center gap-2"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-1 bg-[#090A0B] p-1 border border-[#27272A] w-fit">
+        {[
+          {id: 'orders' as const, label: `Orders (${orders.length})`},
+          {id: 'addresses' as const, label: `Addresses (${addresses.length})`},
+          {id: 'wishlist' as const, label: `Wishlist (${wishlist.length})`},
+          {id: 'settings' as const, label: 'Preferences & Security'},
+        ].map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => setAccountTab(t.id)}
+            className={`px-4 py-2 text-xs font-mono-tabular uppercase ${
+              accountTab === t.id ? 'bg-[#EF2929] text-white font-semibold' : 'text-[#C6C6C7]'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-8">
+        {accountTab === 'orders' && (
+          <div className="space-y-4">
+            {orders.length === 0 ? (
+              <div className="bg-[#181A1D] border border-[#27272A] p-8 text-center">
+                <Package className="w-8 h-8 text-[#71717A] mx-auto" />
+                <p className="text-sm text-white mt-3">No orders placed under this account yet.</p>
+                <button
+                  type="button"
+                  onClick={() => navigate('/shop')}
+                  className="mt-4 h-10 px-5 bg-[#EF2929] text-white font-mono-tabular text-xs uppercase"
+                >
+                  Shop Catalogue
+                </button>
+              </div>
+            ) : (
+              orders.map((o) => (
+                <div key={o.id} className="bg-[#181A1D] border border-[#27272A] p-5 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#27272A] pb-3">
+                    <div>
+                      <span className="font-mono-tabular text-sm font-semibold text-white">
+                        {o.order_number}
+                      </span>
+                      <span className="text-xs text-[#71717A] ml-3">
+                        {new Date(o.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 font-mono-tabular text-xs">
+                      <span className="text-[#EF2929]">{o.order_status}</span>
+                      <span className="text-white">{formatPrice(o.total_pkr)}</span>
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/track-order?order=${o.order_number}`)}
+                        className="underline text-[#C6C6C7] hover:text-white"
+                      >
+                        Track
+                      </button>
+                    </div>
+                  </div>
+                  <div className="text-xs text-[#C6C6C7] space-y-1">
+                    {(o.items || []).map((it) => (
+                      <p key={it.id}>
+                        {it.product_name} ({it.size} · {it.color_name}) × {it.quantity}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {accountTab === 'addresses' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-7 space-y-4">
+              {addresses.map((a) => (
+                <div key={a.id} className="bg-[#181A1D] border border-[#27272A] p-5 flex justify-between">
+                  <div>
+                    <p className="font-mono-tabular text-xs uppercase text-[#EF2929]">{a.label}</p>
+                    <p className="text-sm font-semibold text-white mt-1">{a.street_address}</p>
+                    <p className="text-xs text-[#C6C6C7] mt-0.5">
+                      {a.city}, {a.postal_code} · {a.country}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await fetch(`/api/account/addresses/${a.id}`, {method: 'DELETE'});
+                      setAddresses((prev) => prev.filter((x) => x.id !== a.id));
+                    }}
+                    className="text-xs font-mono-tabular text-[#71717A] hover:text-[#EF2929]"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <form onSubmit={handleAddAddress} className="lg:col-span-5 bg-[#181A1D] border border-[#27272A] p-6 space-y-3">
+              <h2 className="font-display text-2xl text-white uppercase">Add Saved Address</h2>
+              <input
+                required
+                value={addrLabel}
+                onChange={(e) => setAddrLabel(e.target.value)}
+                placeholder="Label (Home / Studio)"
+                className="w-full h-10 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+              />
+              <input
+                required
+                value={addrCountry}
+                onChange={(e) => setAddrCountry(e.target.value)}
+                placeholder="Country"
+                className="w-full h-10 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  required
+                  value={addrCity}
+                  onChange={(e) => setAddrCity(e.target.value)}
+                  placeholder="City"
+                  className="h-10 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+                />
+                <input
+                  value={addrPostal}
+                  onChange={(e) => setAddrPostal(e.target.value)}
+                  placeholder="Postal Code"
+                  className="h-10 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+                />
+              </div>
+              <input
+                required
+                value={addrStreet}
+                onChange={(e) => setAddrStreet(e.target.value)}
+                placeholder="Complete Street Address"
+                className="w-full h-10 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+              />
+              <button
+                type="submit"
+                className="w-full h-11 bg-[#EF2929] text-white font-mono-tabular text-xs font-semibold uppercase"
+              >
+                Save Address
+              </button>
+            </form>
+          </div>
+        )}
+
+        {accountTab === 'wishlist' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {wishlist.map((w) => (
+              <button
+                key={w.id}
+                type="button"
+                onClick={() => navigate(`/product/${w.slug}`)}
+                className="text-left bg-[#181A1D] border border-[#27272A] hover:border-[#EF2929] p-4"
+              >
+                <img
+                  src={w.image_url}
+                  alt={w.name}
+                  referrerPolicy="no-referrer"
+                  className="aspect-[4/3] w-full object-cover bg-[#090A0B]"
+                />
+                <p className="text-sm font-semibold text-white mt-3">{w.name}</p>
+                <p className="font-mono-tabular text-xs text-[#C6C6C7] mt-1">
+                  {formatPrice(w.base_price_pkr)}
+                </p>
+              </button>
+            ))}
+            {wishlist.length === 0 && (
+              <p className="text-sm text-[#71717A]">Your wishlist is empty.</p>
+            )}
+          </div>
+        )}
+
+        {accountTab === 'settings' && (
+          <form onSubmit={handleSaveProfile} className="max-w-lg bg-[#181A1D] border border-[#27272A] p-6 space-y-4">
+            <h2 className="font-display text-2xl text-white uppercase">
+              Profile &amp; Notification Consent
+            </h2>
+            <input
+              required
+              value={profName}
+              onChange={(e) => setProfName(e.target.value)}
+              className="w-full h-11 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+            />
+            <input
+              required
+              value={profPhone}
+              onChange={(e) => setProfPhone(e.target.value)}
+              className="w-full h-11 px-3 bg-[#090A0B] border border-[#27272A] text-sm text-white"
+            />
+            <label className="flex items-center gap-2.5 text-xs text-[#C6C6C7] cursor-pointer">
+              <input
+                type="checkbox"
+                checked={profWa}
+                onChange={(e) => setProfWa(e.target.checked)}
+                className="w-4 h-4 accent-[#EF2929]"
+              />
+              <span>WhatsApp Order &amp; Dispatch Notifications</span>
+            </label>
+            <label className="flex items-center gap-2.5 text-xs text-[#C6C6C7] cursor-pointer">
+              <input
+                type="checkbox"
+                checked={profMkt}
+                onChange={(e) => setProfMkt(e.target.checked)}
+                className="w-4 h-4 accent-[#EF2929]"
+              />
+              <span>Marketing Emails &amp; Limited Drop Alerts</span>
+            </label>
+            <button
+              type="submit"
+              className="h-11 px-6 bg-[#EF2929] text-white font-mono-tabular text-xs font-semibold uppercase"
+            >
+              Save Preferences
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Anton", Impact, sans-serif;
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-cavity: #090A0B;
+  --color-deck: #111315;
+  --color-panel: #181A1D;
+  --color-panel-elevated: #202327;
+  --color-hairline: #27272A;
+  --color-pitlane-red: #EF2929;
+  --color-carbon-grey: #71717A;
+}
+
+@layer base {
+  html {
+    background-color: #111315;
+    color: #ffffff;
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: #111315;
+    color: #ffffff;
+    overflow-x: clip;
+    min-height: 100dvh;
+  }
+
+  /* Enforce sharp 0px geometric corners across brutalist atelier UI */
+  *,
+  *::before,
+  *::after {
+    border-radius: 0px;
+  }
+
+  :focus-visible {
+    outline: 2px solid #EF2929;
+    outline-offset: 2px;
+  }
+}
+
+.font-display {
+  font-family: "Anton", Impact, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-mono-tabular {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.hairline-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.checkered-divider {
+  height: 6px;
+  background-image:
+    linear-gradient(45deg, #27272A 25%, transparent 25%),
+    linear-gradient(-45deg, #27272A 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #27272A 75%),
+    linear-gradient(-45deg, transparent 75%, #27272A 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
