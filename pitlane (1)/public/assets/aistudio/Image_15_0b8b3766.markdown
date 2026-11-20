@@ -1,0 +1,214 @@
+---
+name: High-Octane Luxury Atelier
+colors:
+  surface: '#121416'
+  surface-dim: '#121416'
+  surface-bright: '#38393c'
+  surface-container-lowest: '#0c0e10'
+  surface-container-low: '#1a1c1e'
+  surface-container: '#1e2022'
+  surface-container-high: '#282a2c'
+  surface-container-highest: '#333537'
+  on-surface: '#e2e2e5'
+  on-surface-variant: '#e7bdb8'
+  inverse-surface: '#e2e2e5'
+  inverse-on-surface: '#2f3133'
+  outline: '#ae8883'
+  outline-variant: '#5d3f3c'
+  surface-tint: '#ffb4ab'
+  primary: '#ffb4ab'
+  on-primary: '#690005'
+  primary-container: '#ff544a'
+  on-primary-container: '#5c0004'
+  inverse-primary: '#c00012'
+  secondary: '#c6c6c7'
+  on-secondary: '#2f3131'
+  secondary-container: '#454747'
+  on-secondary-container: '#b4b5b5'
+  tertiary: '#c6c5cf'
+  on-tertiary: '#2f3038'
+  tertiary-container: '#909099'
+  on-tertiary-container: '#282931'
+  error: '#ffb4ab'
+  on-error: '#690005'
+  error-container: '#93000a'
+  on-error-container: '#ffdad6'
+  primary-fixed: '#ffdad6'
+  primary-fixed-dim: '#ffb4ab'
+  on-primary-fixed: '#410002'
+  on-primary-fixed-variant: '#93000b'
+  secondary-fixed: '#e2e2e2'
+  secondary-fixed-dim: '#c6c6c7'
+  on-secondary-fixed: '#1a1c1c'
+  on-secondary-fixed-variant: '#454747'
+  tertiary-fixed: '#e3e1ec'
+  tertiary-fixed-dim: '#c6c5cf'
+  on-tertiary-fixed: '#1a1b22'
+  on-tertiary-fixed-variant: '#46464e'
+  background: '#121416'
+  on-background: '#e2e2e5'
+  surface-variant: '#333537'
+typography:
+  display-hero:
+    fontFamily: Anton
+    fontSize: 5rem
+    fontWeight: '400'
+    lineHeight: '0.95'
+    letterSpacing: 0.02em
+  display-hero-mobile:
+    fontFamily: Anton
+    fontSize: 3rem
+    fontWeight: '400'
+    lineHeight: '1.0'
+    letterSpacing: 0.01em
+  headline-xl:
+    fontFamily: Anton
+    fontSize: 3rem
+    fontWeight: '400'
+    lineHeight: '1.05'
+    letterSpacing: 0.02em
+  headline-xl-mobile:
+    fontFamily: Anton
+    fontSize: 2rem
+    fontWeight: '400'
+    lineHeight: '1.1'
+    letterSpacing: 0.01em
+  headline-lg:
+    fontFamily: Anton
+    fontSize: 2rem
+    fontWeight: '400'
+    lineHeight: '1.15'
+    letterSpacing: 0.03em
+  headline-md:
+    fontFamily: Anton
+    fontSize: 1.5rem
+    fontWeight: '400'
+    lineHeight: '1.2'
+    letterSpacing: 0.03em
+  title-editorial:
+    fontFamily: Hanken Grotesk
+    fontSize: 1.25rem
+    fontWeight: '600'
+    lineHeight: '1.3'
+    letterSpacing: -0.01em
+  body-lg:
+    fontFamily: Hanken Grotesk
+    fontSize: 1.125rem
+    fontWeight: '400'
+    lineHeight: '1.6'
+    letterSpacing: 0em
+  body-md:
+    fontFamily: Hanken Grotesk
+    fontSize: 0.9375rem
+    fontWeight: '400'
+    lineHeight: '1.5'
+    letterSpacing: 0em
+  body-sm:
+    fontFamily: Hanken Grotesk
+    fontSize: 0.8125rem
+    fontWeight: '400'
+    lineHeight: '1.4'
+    letterSpacing: 0.01em
+  telemetry-mono-lg:
+    fontFamily: JetBrains Mono
+    fontSize: 1rem
+    fontWeight: '600'
+    lineHeight: '1.2'
+    letterSpacing: 0.05em
+  telemetry-mono-md:
+    fontFamily: JetBrains Mono
+    fontSize: 0.8125rem
+    fontWeight: '500'
+    lineHeight: '1.3'
+    letterSpacing: 0.08em
+  telemetry-mono-sm:
+    fontFamily: JetBrains Mono
+    fontSize: 0.6875rem
+    fontWeight: '500'
+    lineHeight: '1.2'
+    letterSpacing: 0.1em
+spacing:
+  gutter: 1.5rem
+  gutter-mobile: 0.75rem
+  margin: 2.5rem
+  margin-mobile: 1rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 1rem
+  space-lg: 1.75rem
+  space-xl: 3rem
+---
+
+## Brand & Style
+The design system channels high-end paddock culture, merging technical motorsport precision with avant-garde luxury streetwear. It is tailored for modern automotive enthusiasts, streetwear tastemakers, and motorsport insiders who demand mechanical sophistication alongside sartorial elevation.
+
+The aesthetic philosophy fuses **High-Contrast Editorial Brutalism** with **Sleek Technical Minimalism**:
+- **Monolithic Speed:** Heavy, condensed typography paired with hyper-crisp technical monospacing evoke telemetry displays, garage timing boards, and runway lookbooks.
+- **Material Realism:** Carbon textures, dark matte backings, asphalt grains, and micro-ruled technical dividers simulate mechanical blueprints and race apparatus without skeuomorphic clutter.
+- **Controlled Urgency:** Tactical pops of high-voltage red create intentional focal points, mimicking pit lane safety indicators, telemetry limits, and competition badges.
+
+## Colors
+The palette captures the nocturnal intensity of a night Grand Prix under circuit floods.
+
+- **Primary (`#EF2929` - Pitlane Red):** High-alert, pure racing red. Used deliberately for focal checkout actions, live race indicators, drop alerts, and critical technical telemetry. Never dilute this tone with tints; utilize full saturation against matte dark surfaces.
+- **Secondary (`#FFFFFF` - Pure White):** Crisp, optical white reserved for high-contrast headline editorial typography, stark keyline borders, and primary button labels.
+- **Tertiary (`#71717A` - Carbon Grey):** Mid-tone neutral for technical metadata, structural rules, monospaced specs, and secondary interaction surfaces.
+- **Neutral (`#111315` - Matte Black):** The core base substrate, evocative of carbon chassis tubs and raw asphalt. Supported by `#181A1D` for elevated cards, `#27272A` (Dark Charcoal) for micro-borders, and `#090A0B` for deep cavity backgrounds.
+
+Apply color with high optical hierarchy: keep canvases predominantly deep black and carbon grey, unleashing Pitlane Red strictly as a surgical kinetic trigger.
+
+## Typography
+Typography reflects the dialogue between grandstand billboards, wind-tunnel charts, and high-fashion catalogs.
+
+- **Headlines (`Anton`):** All uppercase. Condensed, bold, and vertical. Used to drive aggressive tempo across landing pages, campaign banners, and category headers.
+- **Body (`Hanken Grotesk`):** Clean, structural, contemporary European grotesque. Delivers razor-sharp readability for product descriptions, atelier essays, and order summaries.
+- **Labels & Telemetry (`JetBrains Mono`):** Monospaced technical indicators formatted with uppercase and generous tracking. Applied to sector timing, stock metrics, sizing parameters, coordinates, and product edition stamps (e.g., `EDITION // 004/100`).
+
+## Layout & Spacing
+The layout adheres to a rigorous 12-column engineering grid with structural 1px rule boundaries that anchor products like mechanical components in an exploded schematic.
+
+- **Desktop (12 Columns):** `margin` of `2.5rem`, `gutter` of `1.5rem`. Modules stack with strict geometric alignment. Side rails and technical gutters are used for sticky timing tickers, live leaderboard feeds, and vertical editorial titles.
+- **Tablet (8 Columns):** `margin` of `1.5rem`, `gutter` of `1rem`. E-commerce grids fold cleanly into 2-column or 4-column balanced sets.
+- **Mobile (4 Columns):** `margin-mobile` of `1rem`, `gutter-mobile` of `0.75rem`. Fluid single or double card streams; horizontal swipe carousels emulate the speed of a passing aerodynamic chassis.
+- **Rule Lines & Separators:** Divide spatial blocks using `1px solid #27272A` rather than excessive blank margins to preserve high-density racing paddock utility.
+
+## Elevation & Depth
+Depth in the design system is structural, tonal, and tactile, rejecting soft cloud-like shadows in favor of mechanical layer stacking:
+
+- **Surface Tiers:**
+  - *Cavity (Background 0):* `#090A0B` — Used for main canvas, telemetry wells, and recessed slots.
+  - *Deck (Background 1):* `#111315` — Base level for standard layout sections and product containers.
+  - *Panel (Surface Container 2):* `#181A1D` — Elevated interactive modules, modal overlays, and drawer components.
+- **Micro-Borders:** Sharp `1px` low-contrast rules (`#27272A`) frame every container, establishing the visual precision of laser-cut composite components. Under active or hover states, borders illuminate to `#FFFFFF` or `#EF2929`.
+- **Specular Glows & Shadows:** Drop shadows are minimal and hard-edged or tightly focused: `0 8px 24px -4px rgba(0, 0, 0, 0.85)`. Floating active states and illuminated badges leverage a targeted red luminescence: `0 0 16px rgba(239, 41, 41, 0.45)`.
+- **Checker & Grid Watermarks:** Technical hairline grids (10% opacity) and micro-checkered edge accents serve as depth cues along footer dividers and telemetry strips.
+
+## Shapes
+The shape language is uncompromisingly **Sharp (`0`)**. 
+
+All interface elements—including buttons, cards, image frames, and input modules—use raw `0px` border-radii. This deliberate lack of curvature reinforces the structural integrity of carbon-fiber tubs, monocoque geometry, aerodynamic splitters, and brutalist industrial architecture. Chamfered or cut-corner accents (`clip-path: polygon(...)`) may be applied to high-tier product badges and telemetry tags to echo technical chassis serial plates.
+
+## Components
+
+### Buttons
+- **Primary Action (Pole Position):** Background `#EF2929`, label `#FFFFFF` in `Anton` or bold `JetBrains Mono` (uppercase). Sharp corners, 0px radius. Hover shifts to `#FFFFFF` background with `#111315` text, accompanied by an instant 120ms linear transition.
+- **Secondary (Chassis Outline):** Background transparent, 1px border `#FFFFFF`, text `#FFFFFF`. Hover inverts to solid `#FFFFFF` fill with `#111315` label.
+- **Technical Action (Telemetry Ghost):** Background `#181A1D`, 1px border `#27272A`, text `#71717A` in `JetBrains Mono`. Hover highlights border to `#EF2929` and text to `#FFFFFF`.
+
+### Chips & Badges
+- **Race Data / Lap Status:** Monospaced label enclosed in a 1px border. Live session chips feature an inner pulsing 6px square in `#EF2929`.
+- **Collection Badges:** Solid `#EF2929` background with micro `#FFFFFF` text (e.g., `RACE-READY // DROP 01`) or matte black with a subtle checkered edge flag icon.
+
+### Cards (Product & F1 Centre)
+- **Garment Card:** Zero-radius container with `#181A1D` surface and 1px `#27272A` perimeter. Image framing utilizes a muted asphalt dark background. On hover, the 1px perimeter transitions to `#EF2929` and secondary garment telemetry (weight, fabric composition, run number) reveals via an instant slide-up mono overlay.
+- **Race Centre Telemetry Card:** High-density split layout. Top sector displays driver status and constructor logo; bottom sector displays lap time differential rendered in `telemetry-mono-lg` with `#EF2929` delta tags.
+
+### Inputs & Selectors
+- **Fields:** Flush dark background (`#090A0B`) framed by a bottom-only 2px line or full 1px border in `#27272A`. Focused state illuminates border to `#FFFFFF` with monospaced label floating in `#EF2929`.
+- **Quantity & Sizing Selectors:** Monolithic geometric blocks lined up edge-to-edge. Selected sizes display inverted `#FFFFFF` fill with `#111315` typography.
+
+### Checkboxes & Radios
+- Square 16px boxes with 0px radius. Empty state uses `#181A1D` fill and `#71717A` border. Checked state renders full `#EF2929` fill with an inset `#FFFFFF` mechanical square pip or crosshair tick.
+
+### Lists & Race Timing Tables
+- Alternating subtle rows (`#111315` and `#141618`) separated by 1px `#27272A` horizontal rules. Timings, sectors, and prices are strictly aligned via tabular figures in `JetBrains Mono`.

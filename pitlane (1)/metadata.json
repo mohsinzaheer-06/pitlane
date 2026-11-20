@@ -1,0 +1,6 @@
+{
+  "name": "PITLANE",
+  "description": "Independent motorsport-inspired luxury streetwear, collector scale models, Formula 1 Racing Centre, and WhatsApp Business e-commerce platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
